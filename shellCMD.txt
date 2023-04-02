@@ -1,0 +1,6 @@
+
+
+Run this first to create state file
+terraform init -backend-config="address=https://gitlab.com/api/v4/projects/44836661/terraform/state/" -backend-config="lock_address=https://gitlab.com/api/v4/projects/44836661/terraform/state/kaperekk-tf/lock" -backend-config="unlock_address=https://gitlab.com/api/v4/projects/44836661/terraform/state/kaperekk-tf/lock" -backend-config="username=kaperekk" -backend-config="password=$$GITLAB_ACCESS_TOKEN" -backend-config="lock_method=POST" -backend-config="unlock_method=DELETE" -backend-config="retry_wait_min=5"
+
+
