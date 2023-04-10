@@ -31,6 +31,7 @@ validate:
   stage: validate
   script:
     - terraform validate
+    - terraform fmt -check
   cache:
     key: ${CI_COMMIT_REF_NAME}
     paths:
