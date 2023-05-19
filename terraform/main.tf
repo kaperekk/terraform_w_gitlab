@@ -73,7 +73,7 @@ resource "aws_security_group" "lb_sg" {
 
 
 resource "aws_lb" "web_lb" {
-  name               = "web_lb"
+  name               = "weblb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
@@ -100,6 +100,8 @@ resource "aws_launch_configuration" "web_lc" {
 }
 
 resource "aws_autoscaling_group" "web_asg" {
+  min_size             = 1
   desired_capacity     = 2
   max_size             = 3
+  launch_configuration = aws_launch_configuration.web_lc.name
 }

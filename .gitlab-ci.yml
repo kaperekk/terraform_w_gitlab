@@ -6,9 +6,8 @@ workflow:
       - when: always
 
 variables:
-  GitLab_username: = kaperekk
   TF_DIR: ${CI_PROJECT_DIR}/terraform
-  STATE_NAME: "${GitLab_username}-tf"
+  STATE_NAME: "$USERNAME-tf"
   ADDRESS: "https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/terraform/state/${STATE_NAME}"
 
 stages:
@@ -23,15 +22,14 @@ image:
 
 before_script:
   - terraform --version
-  - export GITLAB_ACCESS_TOKEN=$TOKEN
+  - export GITLAB_ACCESS_TOKEN=$GITLAB_ACCESS_TOKEN
   - cd ${TF_DIR}
-  - terraform init  -reconfigure -backend-config="address=${ADDRESS}" -backend-config="lock_address=${ADDRESS}/lock" -backend-config="unlock_address=${ADDRESS}/lock" -backend-config="username=${GitLab_username}" -backend-config="password=$GITLAB_ACCESS_TOKEN" -backend-config="lock_method=POST" -backend-config="unlock_method=DELETE" -backend-config="retry_wait_min=5"
+  - terraform init  -reconfigure -backend-config="address=${ADDRESS}" -backend-config="lock_address=${ADDRESS}/lock" -backend-config="unlock_address=${ADDRESS}/lock" -backend-config="username=<UseName>" -backend-config="password=$GITLAB_ACCESS_TOKEN" -backend-config="lock_method=POST" -backend-config="unlock_method=DELETE" -backend-config="retry_wait_min=5"
 
 validate:
   stage: validate
   script:
     - terraform validate
-    - terraform fmt -check
   cache:
     key: ${CI_COMMIT_REF_NAME}
     paths:
@@ -76,3 +74,4 @@ destroy:
     - ${TF_DIR}/.terraform
     policy: pull
   when: manual
+  
